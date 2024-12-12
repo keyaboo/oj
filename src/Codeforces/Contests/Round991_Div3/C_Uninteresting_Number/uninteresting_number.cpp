@@ -22,7 +22,7 @@ failed the test case for an absurdly high number because dp table got too big.
 */
 
 int main() {
-    fast; 
+    fast;
     int t; 
     cin >> t; 
     cin.ignore();
