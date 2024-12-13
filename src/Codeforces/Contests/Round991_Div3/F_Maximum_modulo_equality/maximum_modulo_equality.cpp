@@ -74,7 +74,7 @@ vector<int> solve(vector<pair<int, int>>& queries, vector<int>& nums) {
             st[i][j] = gcd(st[i][j - 1], st[i + (1 << (j - 1))][j - 1]);
         }
     }
-
+    cout << st[0][0] << endl;
     cout << st[0][1] << endl;
     cout << st[0][2] << endl;
     
