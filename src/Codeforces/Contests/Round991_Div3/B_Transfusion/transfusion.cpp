@@ -4,12 +4,6 @@ using namespace std;
 #define endl '\n'
 #define fast ios_base::sync_with_stdio(false); cin.tie(NULL);
 static bool canTransfuse(vector<int>& arr); 
-/*
-I've seen this problem before. I think you just need to keep a running average as a float.
-I remember the Math.ceil function got used. small prefix mean -> big is what we have to worry about.
-no it was floor, and I think it needs to be greater than i.
-I was reading this problem wrong, this wasn't the same as that one at all. got it wrong bc long long
-*/
 
 int main() {
     fast; 
