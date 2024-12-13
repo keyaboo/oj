@@ -6,24 +6,27 @@ using namespace std;
 
 /*
 could just have an int[26] array that gets loaded up. odd length strings can have one odd
-count appearance.
+count appearance. better way to do this is with a stack for the second half I just realized.
+
+want to use longs and not char arrays. string is kind of like a hybrid of java stringbuilder
+and string. stacks aren't as convenient.
 */
 
 int main() {
     fast;
     string line; 
     getline(cin, line);
-    vector<int> counts(26,0);
+    vector<long> counts(26,0);
     for (int i = 0; i < line.size(); i++) {
         int c = line[i] - 'A';
         counts[c]++;
     }
     int idx = 0;
     int mid = -1;
-    char res[line.size() + 1];
-    res[line.size()] = '\0';
+    string res;
+    stack<char> backhalf;
     for (int i = 0; i < 26; i++) {
-        int count = counts[i];
+        long count = counts[i];
         while (count > 0) {
             if (count == 1) {
                 if (mid != -1) {
@@ -31,16 +34,20 @@ int main() {
                     return 0;
                 } else {
                     mid = i;
+                    break;
                 }
             }
-            res[idx] = i + 'A';
-            res[line.size() - idx] = i + 'A';
-            idx++;
+            res += i + 'A';
+            backhalf.push(i + 'A');
             count -= 2;
         }
     }
     if (mid != -1) {
-        res[idx] = mid + 'A';
+        res += mid + 'A';
+    }
+    while (!backhalf.empty()) {
+        res += backhalf.top();
+        backhalf.pop();
     }
     string s(res);
     cout << s << endl;
