@@ -49,48 +49,46 @@ then the next column finds the gcd of all the diffs. then the next column finds
 the gcd of pairs from those (the numbers calculated is one fewer), then the next column
 finds the gcd of those differences, again the calculations shrink.
 
+edit: 
+
+the L's are always aligned. I was confused about how access would work if distance was three
+but it would be accessing everything in the first column.
 */
 
 vector<int> solve(vector<pair<int, int>>& queries, vector<int>& nums) {
     int n = nums.size();
-    vector<int> res(queries.size(), 0);
     if (n == 1) {
-        return vector<int>(1,0); // one element array prevents segfault.
+        return vector<int>(queries.size(), 0);
     }
-    vector<int> diff(n - 1);  // Store differences of adjacent elements
+    vector<int> diff(n - 1); 
     for (int i = 1; i < n; ++i) {
         diff[i - 1] = abs(nums[i] - nums[i - 1]);
     }
     
-    // Sparse table
     int k = log2(n - 1) + 1; 
     vector<vector<int>> st(n-1, vector<int>(k));
     for (int i = 0; i < n - 1; ++i) {
         st[i][0] = diff[i];
     }
-    // cout << st[0][0] << endl;
-    for (int j = 1; j < k; ++j) { // Iterate over columns
-        for (int i = 0; i + (1 << j) <= n - 1; ++i) { // Iterate over rows
+
+    for (int j = 1; j < k; ++j) { 
+        for (int i = 0; i + (1 << j) <= n - 1; i++) {
             st[i][j] = gcd(st[i][j - 1], st[i + (1 << (j - 1))][j - 1]);
         }
-    }
-    cout << st[0][0] << endl;
-    cout << st[0][1] << endl;
-    cout << st[0][2] << endl;
-    
+    }    
 
-    // Query processing
+    vector<int> res(queries.size(), 0);
+
     for (int i = 0; i < queries.size(); ++i) {
         int l = queries[i].first - 1;
         int r = queries[i].second - 1;
-        if (l == r) { // Handle single-element queries
-            res[0] = 0;
+        if (l == r) {
+            res[i] = 0;
             continue;
         }
-        r--;
+        r--; // this is because first col holds only diffs
         int j = log2(r - l + 1);
-        cout << "l " << l << " r " << r << " j " << j << endl;
-        res[i] = gcd(st[j][l], st[r - (1 << j) + 1][j]);
+        res[i] = gcd(st[l][j], st[r - (1 << j) + 1][j]);
     }
     
     return res;

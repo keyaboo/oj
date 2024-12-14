@@ -34,7 +34,7 @@ oh I thought I could be liberal with adding extra indices but that's not a good
 idea. 
 it can be the first appearance means loop in the regular order.
 
-
+this is brute force, use a treeset.
 */
 long long findScore(vector<int>& nums) {
     long long score = 0;
