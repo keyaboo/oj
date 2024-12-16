@@ -6,42 +6,25 @@ using namespace std;
 int perfectSum(vector<int>& arr, int target);
 
 int main() {
-    int numTestCases;
-    cin >> numTestCases; 
-    cin.ignore(); // Ignore the newline after reading numTestCases
+    fast; 
+    int t; 
+    cin >> t; 
+    cin.ignore();
 
-    for (int t = 0; t < numTestCases; ++t) {
-        int numPairs;
-        cin >> numPairs;
-        cin.ignore(); // Ignore the newline
-
-        vector<vector<int>> classes;
-        for (int i = 0; i < numPairs; ++i) {
-            string line;
-            getline(cin, line); 
-            vector<int> classPair;
-            stringstream ss(line);
-            int num;
-            while (ss >> num) {
-                classPair.push_back(num);
-            }
-            classes.push_back(classPair);
+    while(t--) {
+        vector<int> arr;
+        int target;
+        string inputLine;
+        getline(cin, inputLine);
+        stringstream ss(inputLine);
+        int value;
+        while (ss >> value) {
+            arr.push_back(value);
         }
-
-        int extraStudents;
-        cin >> extraStudents;
-        cin.ignore(); // Ignore the newline
-
-
-        // Process the current test case 
-        cout << "Test Case " << t + 1 << endl;
-        for (const auto& classPair : classes) {
-            for (int num : classPair) {
-                cout << num << " "; 
-            }
-            cout << endl;
-        }
-        cout << "Extra students: " << extraStudents << endl;
+        cin >> target;
+        cin.ignore();
+        int res = perfectSum(arr, target);
+        cout << res << endl;
     }
 
     return 0;
@@ -54,6 +37,7 @@ int main() {
         for (int i = 1; i <= n; i++) {
             int num = arr[i - 1]; // this is where you're liable to make a mistake.
             for (int j = 0; j <= k; j++) {
+                dp[i][j] = dp[i-1][j];
                 if (j >= num) {
                     dp[i][j] = dp[i-1][j] + dp[i-1][j-num];
                 } else {
