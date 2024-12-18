@@ -6,28 +6,25 @@ using namespace std;
 static long configure(int n);
 
 /*
-Maybe it's 6^n power minus some constant which may or may not be influenced by the previous value. No definitely not.
-k^2 choose 2 minus some constant.
-nCr=n!(n−r)!r! C r n = n ! / ( n - r ) ! r ! 
-that constant is 8 * 2 * 2^(n-3) because going in both directions when n > 3. these numbers get wild pretty quickly,
-wondering if there's some cancel or if the k^2 choose 2 can be just multiplied by some constant like this is.
-the second constant is wrong, it's going from 8 -> 24 -> 48 -> 80 so 4 * 2^(n-2)? 
+it's (n^2 choose 2) - (2(n-2))^3 but calculating that n^2 choose 2 efficiently I had to look up how to do.
+no that second thing is wrong, the pattern 8 -> 24 -> 48 -> 80.
+80 -> 5 * 16, 48 -> 4 * 12, 24 -> 3 * 8, 120 -> 6 * 20
+24 -> 3 * (0 + 8), 48 -> 4 * (4 + 8), 80 -> 5 * (8 + 8), 120 -> 6 * (12 + 8) 
 */
 int main() {
     fast; 
     int n; 
     cin >> n; 
-    long res = configure(n);
-    vector<long long> factorial;
-    long long factorial = 1LL;
-    for (int i = 0; i < n; i++) {
-
+    cout << 0 << endl;
+    if (n >= 2) {
+        cout << 6 << endl;
     }
-    printf("%lld\n",x);
-    cout << res << endl;
+    for (int i = 3; i <= n; i++) {
+        long long spots = (pow(i, 4) - pow(i,2)) / 2;
+        long long horses =  (i - 2) * (8 + 4 * (i - 3));
+        long long ways = spots - horses;
+        cout << ways << endl;
+    }
     return 0;
 }
 
-static long configure(int n) {
-    return 0;
-}
