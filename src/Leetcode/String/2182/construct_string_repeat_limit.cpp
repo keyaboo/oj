@@ -8,10 +8,14 @@ string repeatLimitedString(string s, int repeatLimit);
 int main() {
     fast; 
     int t = 2;
+    string line;
+    int num;
     while(t--) {
-        string str;
-        int num;
-        cin >> str >> num; 
+        getline(cin, line);
+        string str = line.substr(1, line.length() - 2);
+        cin >> num;
+        cin.ignore();
+        // cout << "num: " << num << endl;
         string res = repeatLimitedString(str, num);
         cout << res << endl;
     }
@@ -20,26 +24,47 @@ int main() {
 }
 
     string repeatLimitedString(string s, int repeatLimit) {
-        string res = "";
-        map<char, int> freqs;
+        priority_queue<pair<char, int>> maxheap;
 
-        auto 
+        map<int, int> freqs;
         for (int i = 0; i < s.length(); i++) {
-            int freq = 0;
-            if (freqs.find(s[i] > 0)) {
-                freq = freqs.find(s[i]);
-            }
-            freqs[s[i]] = freq;
+            freqs[s[i] - 'a']++;    
         }
-        map<char,int>::iterator it = freqs.end();
-        std::cout << "Last element: " << it->first << ": " << it->second << endl;;
-
+        for (int i = 0; i < freqs.size(); i++) {
+            if (freqs[i] > 0) {
+                char key = i + 'a';
+                maxheap.push({key, freqs[i]});
+                // cout << key << ": " << freqs[i] << endl;
+            }
+        }
+        string res = "";
+        while (!maxheap.empty()) {
+            pair<char, int> letter = maxheap.top();
+            maxheap.pop();
+            int count = 0;
+            while (letter.second > 0 && count < repeatLimit) { // and
+                res += letter.first;
+                letter.second--;
+                count++;
+            }
+            if (!maxheap.empty() && letter.second > 0) {
+                pair<char, int> nextletter = maxheap.top();
+                maxheap.pop();
+                res += nextletter.first;
+                nextletter.second--;
+                maxheap.push(letter);
+                if (nextletter.second > 0) maxheap.push(nextletter);
+            }
+        }
         return res;
     }
 
 /*
 lexicographically largest string possible. this has a very high acceptance rate.
-hashmap is an unordered map usually, perhaps there's an ordered map that we
-can return to the maximum or minimum key of. can't believe i've barely touched
-treemaps in java.
+it's another priority queue problem, I didn't want it to be but the hint was in the
+repeat limit sort of, any other kind of loop just doesn't really handle that too well.
+by default, for pairs, std::less is the comparison function used.
+
+priority_queue<Type, Container, Comparator> so unless you need to overload different
+template parameters the container and comparator can be neglected.
 */
