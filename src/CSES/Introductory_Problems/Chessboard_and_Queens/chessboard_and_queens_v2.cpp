@@ -41,8 +41,16 @@ int findPermutations(const vector<vector<int>>& matrix, int row, int col, unorde
     if (row == matrix.size() - 1) {
         return 1;
     }
-
-    vector<pair<int, int>> taken = findTaken(matrix, row, col);
+    vector<pair<int, int>> taken;
+    for (int k = 1; row + k < matrix.size(); k++) {
+        taken.push_back({row+k, col});
+        if (col - k >= 0) {
+            taken.push_back({row+k, col - k});
+        }
+        if (row + k < matrix.size()) {
+            taken.push_back({row+k, col + k});
+        }
+    }
     vector<pair<int, int>> newlyBlocked;
     for (const auto& p : taken) {
         if (inaccessible.count(p) == 0) {
@@ -68,30 +76,7 @@ I really wanted to do just one loop but it got so ugly.
 
 the break statements are in direct conflict with this sentence but it was too much work
 doing it this way that I don't mind preserving this version. it overcounts obviously.
+
+
 */
-vector<pair<int, int>> findTaken(const vector<vector<int>>& matrix, int i, int j) {
-    vector<pair<int, int>> taken;
-    for (int k = 1; i + k < matrix.size(); k++) {
-        taken.push_back({i+k, j});
-        if (matrix[i+k][j] == 1) {
-            break;
-        }
-    }
-
-    for (int k = 1; j - k >= 0 && i + k < matrix.size(); k++) {
-        taken.push_back({i+k, j - k});
-        if (matrix[i+k][j-k] == 1) {
-            break;
-        }
-    }
-
-    for (int k = 1; j + k < matrix[0].size() && i + k < matrix.size(); k++) {
-        taken.push_back({i+k, j + k});
-        if (matrix[i+k][j+k] == 1) {
-            break;
-        }
-    }
-    return taken;
-}
-
 
