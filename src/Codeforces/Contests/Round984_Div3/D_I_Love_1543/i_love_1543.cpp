@@ -55,9 +55,9 @@ int solve(vector<vector<int>>& matrix) {
                             total++;
                             break;
                         }
-                        for (int i = 0; i < 4; i++) {
-                            int newrow = row + directions[i][0];
-                            int newcol = col + directions[i][1];
+                        for (int k = 0; k < 4; k++) {
+                            int newrow = row + directions[k][0];
+                            int newcol = col + directions[k][1];
                             if (newrow >= 0 && newrow < n && newcol >= 0 && newcol < m) {
                                 queue.push({{newrow, newcol}, idx + 1});
                             }
@@ -106,4 +106,5 @@ matrix n, m the outermost layer is going to be 0,0 - 0,m-1 : 0, m-1 - n-1, m-1 :
 
 oh they're all even numbers that makes things easier. I could just save a matrix.
 now that I made it to the bfs part, uhh
+I'm overcounting noooooooo this is so hard. need directions specific to > m/2 or whatever.
 */
