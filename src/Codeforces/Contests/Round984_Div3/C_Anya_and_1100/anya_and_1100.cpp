@@ -13,11 +13,8 @@ vector<bool> solve(string s, vector<pair<int, int>> queries) {
 
     for (int i = 0; i < s.length() - 3; i++) {
         int miss = 0;
-        if (s[i] == '0') miss++;
-        if (s[i+1] == '0') miss++;
-        if (s[i+2] == '1') miss++;
-        if (s[i+3] == '1') miss++;
-        if (miss == 0) {
+        
+    if (s[i] == '1' && s[i+1] == '1' && s[i+2] == '0' && s[i+3] == '0') {
             hits.insert(i);
         }
     }
@@ -28,18 +25,12 @@ vector<bool> solve(string s, vector<pair<int, int>> queries) {
         s[idx] = change; 
 
         for (int i = max(0, idx - 3); i <= min(int(s.length()) - 4, idx); i++) {
-            int miss = 0;
-            if (s[i] == '0') miss++;
-            if (s[i + 1] == '0') miss++;
-            if (s[i + 2] == '1') miss++;
-            if (s[i + 3] == '1') miss++;
-            if (miss == 0) {
-                hits.insert(i); 
-            } else {
-                hits.erase(i); // you can erase stuff that isn't there.
-            }
+            if (s[i] == '1' && s[i+1] == '1' && s[i+2] == '0' && s[i+3] == '0') {
+                    hits.insert(i);
+                } else {
+                    hits.erase(i); // you can erase stuff that isn't there.
+                }
         }
-
         res.push_back(!hits.empty());
     }
 
