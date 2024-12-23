@@ -55,9 +55,20 @@ int solve(vector<vector<int>>& matrix) {
                             total++;
                             break;
                         }
-                        for (int k = 0; k < 4; k++) {
-                            int newrow = row + directions[k][0];
-                            int newcol = col + directions[k][1];
+                        vector<int> dirOptions;
+                        if (row < n/2 && col < m/2) { // Quadrant 1
+                            dirOptions = {0, 3};
+                        } else if (row < n/2 && col >= m/2) { // Quadrant 2
+                            dirOptions = {0, 1}; // Right or Down
+                        } else if (row >= n/2 && col >= m/2) { // Quadrant 3
+                            dirOptions = {1, 2};
+                        } else { // Quadrant 4
+                            dirOptions = {2, 3};
+                        }
+
+                        for (int k = 0; k < dirOptions.size(); k++) {
+                            int newrow = row + directions[dirOptions[k]][0];
+                            int newcol = col + directions[dirOptions[k]][1];
                             if (newrow >= 0 && newrow < n && newcol >= 0 && newcol < m) {
                                 queue.push({{newrow, newcol}, idx + 1});
                             }
