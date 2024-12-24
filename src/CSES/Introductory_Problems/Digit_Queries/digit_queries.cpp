@@ -13,44 +13,68 @@ int main() {
         long long k;
         cin >> k;
     }
-        long long p = 19;
+        long long p = 168;
         long long res = solve(p);
-        // cout << res << endl; 
+        cout << res << endl; 
 
     return 0;
 }
 
 long long solve(long long q) {
-    int power = 1;
-    long long rangestart = pow(10, power);
-    cout << "what's the number " << pow(10, power) << " " << endl;
-    vector<long long> rangestarts;
-    rangestarts.push_back(rangestart);
-    while (rangestart < 1e18) {
-        power++;
-        cout << "power" << power << endl;
-        long long newbase = pow(10, power);
-        for (int i = power - 1; i >= 0; i--) {
-            newbase -= pow(10, i);
-        }
-        rangestart += (1 + power * newbase);
-        cout << "newbase: " << newbase << " rangestart " << rangestart << endl;
-        rangestarts.push_back(rangestart);
+    if (q < 10) {
+        return q;
     }
-    int i; // the interval under consideration
-    for (i = 0; i < rangestarts.size(); i++) {
-        cout << rangestarts[i] << " ";
-        if (q - rangestarts[i] > 0) {
-            q -= rangestarts[i];
-        } else {
+    long long power = 0;
+    long long startpos = 0;
+    // cout << "what's the number " << pow(10, power) << " " << endl;
+    vector<long long> rangestarts;
+    rangestarts.push_back(startpos);
+    while (rangestarts[rangestarts.size() - 1] < 1e18) {
+        power++;
+        // cout << "power" << power << endl;
+        long long newbase = 1;
+        for (int i = 0; i < power; i++) {
+            newbase *= 10;
+        }
+        for (int i = power - 1; i >= 0; i--) {
+            newbase -= (long long) pow(10, i);
+        }
+        startpos = rangestarts[rangestarts.size() - 1] + 1 +  (power * newbase);
+        cout << "this thing " << rangestarts[rangestarts.size() - 1] << "newbase: " << newbase << " rangestart " << startpos << " power" << power << endl;
+        rangestarts.push_back(startpos);
+    }
+    
+    cout << rangestarts.size() << " rs size" << endl;
+    cout << "first: " << rangestarts[0] << "second: " << rangestarts[1];
+    int idx = 0;
+    for (int i = rangestarts.size() - 1; i >= 0; i--) {
+        if (q - rangestarts[i] >= 0) {
+            idx = i;
             break;
         }
     }
-    int mod;
-    while (q % (i + 1) != 0) {
+    cout << "q mod 2" << (q % 2) << endl;
+    cout << "q mod 1" << (q % 1) << endl;
+    for (int i = idx + 1; i > 1; i--) {
+        int val = q % i;
+        cout << "q mod " << i << " " << val << endl;
     }
-    cout << endl << "q: " <<  q << " interval " << i << " " << endl;
-    return 0;
+
+    cout << "idx happens to be " << idx << " rangestart at that index is " << rangestarts[idx] << " " << endl;; 
+    q -= rangestarts[idx];
+
+    cout << endl << "q: " <<  q << " interval " << idx << " " << endl;
+    long long multiple = (long long) (idx + 1) * (pow(10, idx));
+    cout << "multiple " << multiple << endl;
+    int positionWithinGroup = q % multiple;
+
+    int positionWithinNumber = positionWithinGroup % (idx + 1);
+
+    long long number = (positionWithinGroup / (idx + 1))  + pow(10, idx);
+    string numberStr = to_string(number);
+    int digit = numberStr[positionWithinNumber] - '0';
+
+    return digit;
 }
 
 /*
@@ -72,4 +96,10 @@ I think maybe modulo checks before all of that like if mod 2 == 0
 ok, find out which modulo it is. you'd have to do for loops to get the digits. for i = 0; i * 20 < q; i++ for tens place
 and for the next iteration i = 0; 2 * i < q; i++ for the ones place.
 
+194 - 189 = 5 100101 it's a 0 just as we expected
+193 - 189 = 4 100101 it's a 1 first "101" as expected
+
+repeat cycle is going to be every 3 (idx + 1) * 100 which is pow(10, idx+1)
+
+ok I actually need to create the number
 */

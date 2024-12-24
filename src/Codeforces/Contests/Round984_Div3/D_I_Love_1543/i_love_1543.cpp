@@ -18,66 +18,25 @@ int solve(vector<vector<int>>& matrix) {
     int n = matrix.size();
     int m = matrix[0].size();
     vector<vector<int>> layers(n, vector<int>(m, -1));
-    for (int layer = 0; layer < min(n / 2, m / 2); layer++) {
-        int i = layer;
-        int j = layer;
-        int dir = 0;
-        while (dir < 4) {
-                // cout << "Layer: " << layer << " i: " << i << " j: " << j << endl;
-                layers[i][j] = layer;
-                int newi = i + directions[dir][0];
-                int newj = j + directions[dir][1];
-                if (newi < layer || newi >= n - layer || newj < layer || newj >= m - layer) {
-                    dir++;
-                    newi = i + directions[dir][0];
-                    newj = j + directions[dir][1];
-                }
-                i = newi;
-                j = newj;
-            }
-    }
-    // printMatrix(layers);
+    vector<int> seq;
     vector<int> favorite = {1, 5, 4, 3};
     int total = 0;
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-            if (matrix[i][j] == 1) {
-                int layer = layers[i][j];
-                queue<pair<pair<int, int>, int>> queue;
-                queue.push({{i, j}, 0});
-                while (!queue.empty()) {
-                    pair<pair<int, int>, int> front = queue.front(); queue.pop();
-                    int row = front.first.first;
-                    int col = front.first.second;
-                    int idx = front.second;
-                    if (matrix[row][col] == favorite[idx] && layers[row][col] == layer) {
-                        if (idx + 1 == favorite.size()) {
-                            total++;
-                            break;
-                        }
-                        vector<int> dirOptions;
-                        if (row < n/2 && col < m/2) { // Quadrant 1
-                            dirOptions = {0, 3};
-                        } else if (row < n/2 && col >= m/2) { // Quadrant 2
-                            dirOptions = {0, 1}; // Right or Down
-                        } else if (row >= n/2 && col >= m/2) { // Quadrant 3
-                            dirOptions = {1, 2};
-                        } else { // Quadrant 4
-                            dirOptions = {2, 3};
-                        }
 
-                        for (int k = 0; k < dirOptions.size(); k++) {
-                            int newrow = row + directions[dirOptions[k]][0];
-                            int newcol = col + directions[dirOptions[k]][1];
-                            if (newrow >= 0 && newrow < n && newcol >= 0 && newcol < m) {
-                                queue.push({{newrow, newcol}, idx + 1});
-                            }
-                        }
-                    } 
-                }
+    for (int layer = 0; 2 * (layer + 1) <= n && 2 * (layer + 1) <= m; layer++) {
+        // cout << "\n layer: " << layer << endl;
+        seq.clear();
+        for (int j = layer; j < m - layer; j++) seq.push_back(matrix[layer][j]);
+        for (int i = layer + 1; i < n - layer - 1; i++) seq.push_back(matrix[i][m - layer - 1]);
+        for (int j = m - layer - 1; j >= layer; j--) seq.push_back(matrix[n - layer - 1][j]);
+        for (int i = n - layer - 2; i >= layer + 1; i--) seq.push_back(matrix[i][layer]);
+        // cout << "seq size: " << seq.size() << endl;
+        for (int k = 0; k < seq.size(); k++) {
+            if (seq[k] == 1 && seq[(k+1) % seq.size()] == 5 && seq[(k+2) % seq.size()] == 4 && seq[(k+3) % seq.size()] == 3) {
+                total++;
             }
         }
     }
+    // printMatrix(layers);
     return total;
 }
 
@@ -118,4 +77,6 @@ matrix n, m the outermost layer is going to be 0,0 - 0,m-1 : 0, m-1 - n-1, m-1 :
 oh they're all even numbers that makes things easier. I could just save a matrix.
 now that I made it to the bfs part, uhh
 I'm overcounting noooooooo this is so hard. need directions specific to > m/2 or whatever.
+
+I liked the way I originally did this so much more but it missed 1 test case :(
 */
