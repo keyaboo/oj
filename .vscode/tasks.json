@@ -2,31 +2,54 @@
     "version": "2.0.0",
     "tasks": [
       {
-        "label": "Compile and Run",
+        "label": "Compile and Run", 
         "type": "shell",
-        "command": "g++ ${fileDirname}/${fileBasenameNoExtension}.cpp -o ${workspaceFolder}/bin/${fileBasenameNoExtension} && ${workspaceFolder}/bin/${fileBasenameNoExtension} < ${fileDirname}/input.txt", 
+        "command": "g++",
+        "args": [
+            "${fileDirname}/${fileBasenameNoExtension}.cpp",
+            "-o",
+            "${workspaceFolder}/bin/${fileBasenameNoExtension}",
+            "&&",
+            "${workspaceFolder}/bin/${fileBasenameNoExtension}",
+            "<",
+            "${fileDirname}/input.txt"
+        ],
         "group": {
-          "kind": "build",
-          "isDefault": true
+            "kind": "build",
+            "isDefault": true 
         },
         "presentation": {
-          "echo": true,
-          "reveal": "always",
-          "focus": false,
-          "panel": "shared",
-          "showReuseMessage": true,
-          "clear": false
+            "echo": true,
+            "reveal": "always",
+            "focus": false,
+            "panel": "shared",
+            "showReuseMessage": true,
+            "clear": false
         },
         "problemMatcher": []
-      },
+    },
       {
         "label": "Build with Make",
         "type": "shell",
-        "command": "make -f ${workspaceFolder}/makefile fileDirname=\"${fileDirname}\" filename=\"${fileBasenameNoExtension}\"",
+        "command": "make",
         "group": "build",
+        "args": [
+          "-f", "${workspaceFolder}/Makefile",
+          "fileDirname=${fileDirname}",
+          "filename=${fileBasenameNoExtension}"
+      ],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": false
+      },
+
         "problemMatcher": [],
         "options": {
-            "cwd": "${fileDirname}" 
+          "cwd": "${workspaceFolder}",
         }
     },
     {
@@ -37,6 +60,29 @@
         "dependsOn": "Build with Make",
         "options": {
             "cwd": "${fileDirname}" 
+        }
+    },
+      {
+        "label": "Clean (Make)",
+        "type": "shell",
+        "command": "make",
+        "args": [
+            "-f", "${workspaceFolder}/Makefile",
+            "clean",
+            "fileDirname=${fileDirname}",
+            "filename=${fileBasenameNoExtension}"  
+        ],
+        "presentation": {
+            "echo": true,
+            "reveal": "always",
+            "focus": false,
+            "panel": "shared",
+            "showReuseMessage": true,
+            "clear": false
+        },
+        "problemMatcher": [],
+        "options": {
+            "cwd": "${workspaceFolder}"
         }
     }
     ]

@@ -1,18 +1,21 @@
 CXX = g++
-CXXFLAGS = -std=c++11 -O2 -I/src/utils
+CXXFLAGS = -std=c++11 -O2
 
 # Get fileDirname and filename from command-line arguments
-fileDirname := $(fileDirname)
-filename := $(filename)
+$(info fileDirname = $(fileDirname))
+$(info filename = $(filename))
 
 # Construct the target name (executable in the bin folder)
 TARGET = bin/a.out
 SRCS = $(fileDirname)/$(filename).cpp \
-    src/utils/tree.cpp  
+    src/utils/tree.cpp \
+	src/utils/list.cpp
 
-HEADERS = src/utils/tree.h
+HEADERS = src/utils/tree.h \
+			src/utils/list.h
 
-OBJS = $(patsubst $(fileDirname)/%.cpp, bin/%.o, $(SRCS)) 
+OBJS = $(patsubst $(fileDirname)/%.cpp, bin/%.o, $(SRCS)) \
+
 # you can append .o files to this OBJS as an alternate to appending headers and SRCS
 all: $(TARGET)
 
@@ -26,7 +29,7 @@ bin/%.o: $(fileDirname)/%.cpp $(HEADERS)
 	$(CXX) $(CXXFLAGS) -I$(dir $(HEADERS)) -c $< -o $@
 
 clean:
-	rm -f $(TARGET) $(OBJS)
+	rm -f bin/*.o bin/a.out
 
 run: $(TARGET)
 	./$(TARGET) < $(fileDirname)/input.txt
