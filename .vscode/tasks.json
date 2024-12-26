@@ -18,7 +18,27 @@
           "clear": false
         },
         "problemMatcher": []
-      }
+      },
+      {
+        "label": "Build with Make",
+        "type": "shell",
+        "command": "make -f ${workspaceFolder}/makefile fileDirname=\"${fileDirname}\" filename=\"${fileBasenameNoExtension}\"",
+        "group": "build",
+        "problemMatcher": [],
+        "options": {
+            "cwd": "${fileDirname}" 
+        }
+    },
+    {
+        "label": "Run (Make)",
+        "type": "shell",
+        "command": "${workspaceFolder}/bin/a.out < ${fileDirname}/input.txt",
+        "group": "test", 
+        "dependsOn": "Build with Make",
+        "options": {
+            "cwd": "${fileDirname}" 
+        }
+    }
     ]
   }
   
