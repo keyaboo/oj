@@ -61,3 +61,48 @@ void printTreeLevelOrder(TreeNode* root) {
     }
     std::cout << std::endl;
 }
+
+TreeNode* searchTreeNode(TreeNode* root, int value) {
+    if (root == nullptr || root->val == value) {
+        return root;
+    }
+
+    // Search in the left subtree
+    TreeNode* leftResult = searchTreeNode(root->left, value);
+    if (leftResult != nullptr) {
+        return leftResult; 
+    }
+
+    return searchTreeNode(root->right, value);
+}
+
+// overkill, I'm only ever going to be using the first if
+bool operator==(const TreeNode& lhs, const TreeNode& rhs) {
+    // If the pointers are the same, they are equal
+    if (&lhs == &rhs) {
+        return true;
+    }
+
+    // If one is nullptr and the other isn't, they are not equal
+    if (lhs.left == nullptr && rhs.left != nullptr) {
+        return false;
+    }
+    if (lhs.left != nullptr && rhs.left == nullptr) {
+        return false;
+    }
+    if (lhs.right == nullptr && rhs.right != nullptr) {
+        return false;
+    }
+    if (lhs.right != nullptr && rhs.right == nullptr) {
+        return false;
+    }
+
+    // Recursively compare the left and right subtrees
+    bool leftEqual = (lhs.left == nullptr && rhs.left == nullptr) || 
+                     (lhs.left != nullptr && rhs.left != nullptr && *lhs.left == *rhs.left);
+    bool rightEqual = (lhs.right == nullptr && rhs.right == nullptr) ||
+                      (lhs.right != nullptr && rhs.right != nullptr && *lhs.right == *rhs.right);
+
+    // Check if the values and subtrees are equal
+    return lhs.val == rhs.val && leftEqual && rightEqual;
+}

@@ -15,10 +15,15 @@ struct TreeNode {
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
+bool operator==(const TreeNode& lhs, const TreeNode& rhs);
+
 TreeNode* createTreeFromValues(const std::vector<int*>& values);
 
 void deleteTree(TreeNode* root);
 
 void printTreeLevelOrder(TreeNode* root);
+
+TreeNode* searchTreeNode(TreeNode* root, int value);
+
 
 #endif
