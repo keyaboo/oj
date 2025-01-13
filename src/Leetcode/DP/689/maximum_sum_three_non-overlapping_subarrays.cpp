@@ -95,4 +95,6 @@ no use dynamic programming 1D.
 
 so this wouldn't work for > 3 subarrays, the approach uses "best index" arrays to store info for 1, 2 and 3 subarrays.
 so you have a prefix sum array that both "best up until and including now" for indices use.
+
+oh then you go at it from the middle and you already know what the best left and right are.
 */
