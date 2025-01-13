@@ -5,8 +5,8 @@ using namespace std;
 #define fast ios_base::sync_with_stdio(false); cin.tie(NULL); 
 int solve(vector<int>& instructions, vector<vector<bool>> visited, int row, int col, int instructionIdx, int prevDir, int (*dir)[2]);
 int main() {
-    // string what = "DRURDDLL";
-        string what = "????????";
+    string what = "DRURDDLL";
+    //string what = "????????";
     cout << what.size() << endl;
     fast; 
     string relative; 
