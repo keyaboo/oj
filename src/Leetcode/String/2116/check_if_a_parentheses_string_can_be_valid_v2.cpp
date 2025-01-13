@@ -37,7 +37,7 @@ bool canBeValid(string& s, string& locked) {
         } else if (s[i] == ')') {
             RB++;
         }
-        if (wildcard - LB + RB < 0) {
+        if (LB - wildcard - RB < 0) {
             return false;
         }
     }
@@ -50,7 +50,7 @@ bool canBeValid(string& s, string& locked) {
         } else if (s[i] == ')') {
             RB++;
         }
-        if (wildcard - RB + LB < 0) {
+        if (RB - wildcard - LB < 0) {
             return false;
         }
     }
@@ -63,4 +63,7 @@ But for the forward pass, subtracting LB accounts for the fact that the locked o
 closing parentheses to balance. Adding RB accounts for the fact that locked closed parentheses add to a surplus of closing
 parentheses. The negative imbalance check basically states, even if you used all of the wildcard parentheses as opening
 parentheses, you still wouldn't have enough to balance the existing locked closed parentheses.
+
+^ not representative of the code
+edited to be more similar to minimum adds problem.
 */
